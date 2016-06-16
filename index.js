@@ -1,52 +1,51 @@
-var postcss = require('postcss');
+import postcss from 'postcss';
 
-module.exports = postcss.plugin('postcss-clearfix', function() {
-  return function(css, result) {
+export default postcss.plugin('postcss-clearfix', () => (css, result) => {
 
-    var selectors = [],
-        commonSelectors,
-        afterSelectors,
-        commonRule,
-        afterRule;
-    
-    css.walkDecls('clear', function(decl) {
+    let selectors = [];
 
-      if (decl.value !== 'fix') return;
+    css.walkDecls('clear', decl => {
 
-      selectors.push(decl.parent.selectors);
+        let { value }  = decl,
+            { parent } = decl,
+            { nodes }  = parent;
 
-      if (decl.parent.nodes.length === 1) return decl.parent.remove();
+        if (value !== 'fix') return;
 
-      decl.remove();
+        selectors.push(parent.selectors);
+
+        if (nodes.length === 1) {
+            parent.remove();
+            return;
+        }
+
+        decl.remove();
 
     });
-    
-    commonSelectors = selectors.map(function(selector) {
-        return selector + '::before,\n' + selector + '::after';
+
+    let selector = selectors.map(sel => {
+        return `${sel}::before,\n${sel}::after`;
     }).join(',\n');
 
-    afterSelectors = selectors.map(function(selector) {
-        return selector + '::after';
-    }).join(',\n');
-
-    commonRule = postcss.rule({ selector: commonSelectors }).append(
-      {
-        prop: 'content',
-        value: '\'\''
-      },
-      {
-        prop: 'display',
-        value: 'table'
-      }
+    const commonRule = postcss.rule({ selector }).append(
+        {
+            prop: 'content',
+            value: '\'\''
+        },
+        {
+            prop: 'display',
+            value: 'table'
+        }
     );
 
-    afterRule = postcss.rule({ selector: afterSelectors }).append(
-      {
-        prop: 'clear',
-        value: 'both'
-      }
+    selector = selectors.map(sel => `${sel}::after`).join(',\n');
+
+    const afterRule = postcss.rule({ selector }).append(
+        {
+            prop: 'clear',
+            value: 'both'
+        }
     );
-    
+
     result.root.prepend(commonRule, afterRule);
-  };
 });
