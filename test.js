@@ -6,7 +6,6 @@ import plugin from './';
 function run(t, input, output, opts = {}) {
     return postcss([plugin(opts)]).process(input)
         .then(result => {
-            console.log(result.css)
             t.deepEqual(result.css, output);
             t.deepEqual(result.warnings().length, 0);
         });

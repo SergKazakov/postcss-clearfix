@@ -2,13 +2,12 @@ import postcss from 'postcss';
 
 export default postcss.plugin('postcss-clearfix', () => (css, result) => {
 
-    let selectors = [];
+    const selectors = [];
 
     css.walkDecls('clear', decl => {
 
-        let { value }  = decl,
-            { parent } = decl,
-            { nodes }  = parent;
+        const { value, parent } = decl;
+        const { nodes }         = parent;
 
         if (value !== 'fix') return;
 
