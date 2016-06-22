@@ -11,7 +11,23 @@ function run(t, input, output, opts = {}) {
         });
 }
 
-test('sets clear: fix correctly', t => {
+test(t => {
+    return run(
+        t,
+`.bar {
+    clear: fix;
+}`,
+`.bar::before,.bar::after {
+    content: '';
+    display: table;
+}
+.bar::after {
+    clear: both;
+}`
+    );
+});
+
+test(t => {
     return run(
         t,
 `.a {
@@ -31,18 +47,11 @@ test('sets clear: fix correctly', t => {
 .f {
     clear: both;
 }`,
-`.b::before,
-.b::after,
-.foo::before,
-.foo::after,
-.bar::before,
-.bar::after {
+`.b::before,.b::after,.foo::before,.foo::after,.bar::before,.bar::after {
     content: '';
     display: table;
 }
-.b::after,
-.foo::after,
-.bar::after {
+.b::after,.foo::after,.bar::after {
     clear: both;
 }
 .a {

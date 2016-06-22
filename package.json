@@ -42,8 +42,9 @@
   },
   "scripts": {
     "test": "ava --require babel-register && eslint index.js",
+    "test:watch": "ava --watch --require babel-register",
     "transpile": "babel index.js -o index.es5.js",
-    "watch": "npm run transpile -- -w"
+    "transpile:watch": "npm run transpile -- -w"
   },
   "eslintConfig": {
     "extends": "eslint-config-postcss/es5"
