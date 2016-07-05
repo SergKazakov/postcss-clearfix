@@ -1,7 +1,6 @@
 import postcss from 'postcss';
 import test    from 'ava';
-
-import plugin from './';
+import plugin  from './';
 
 function run(t, input, output, opts = {}) {
     return postcss([plugin(opts)]).process(input)
@@ -19,10 +18,10 @@ test(t => {
 }`,
 `.bar::before,.bar::after {
     content: '';
-    display: table;
+    display: table
 }
 .bar::after {
-    clear: both;
+    clear: both
 }`
     );
 });

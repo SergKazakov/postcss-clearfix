@@ -1,6 +1,6 @@
 import postcss from 'postcss';
 
-export default postcss.plugin('postcss-clearfix', () => (css) => {
+export default postcss.plugin('postcss-clearfix', () => css => {
 
     const selectors = [];
 
@@ -22,7 +22,9 @@ export default postcss.plugin('postcss-clearfix', () => (css) => {
 
     });
 
-    let selector = selectors.map(sel => `${sel}::before,${sel}::after`);
+    let selector = selectors.map(sel =>
+      `${sel}::before,${sel}::after`
+    ).join(',');
 
     const commonRule = postcss.rule({ selector }).append(
         {
@@ -35,7 +37,9 @@ export default postcss.plugin('postcss-clearfix', () => (css) => {
         }
     );
 
-    selector = selectors.map(sel => `${sel}::after`);
+    selector = selectors.map(sel =>
+      `${sel}::after`
+    ).join(',');
 
     const afterRule = postcss.rule({ selector }).append(
         {

@@ -41,12 +41,20 @@
     "eslint-config-postcss": "^2.0.2"
   },
   "scripts": {
-    "test": "ava --require babel-register && eslint index.js",
-    "test:watch": "ava --watch --require babel-register",
+    "test": "ava && eslint *.js",
+    "test:watch": "ava --watch",
     "transpile": "babel index.js -o index.es5.js",
     "transpile:watch": "npm run transpile -- -w"
   },
   "eslintConfig": {
     "extends": "eslint-config-postcss/es5"
+  },
+  "ava": {
+    "failFast": true,
+    "verbose": true,
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
   }
 }
